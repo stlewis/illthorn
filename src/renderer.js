@@ -1,4 +1,7 @@
 const m = require("mithril")
+const searchInPage = require("electron-in-page-search").default
+const remote = require("electron").remote
+
 const UI = require("./app/ui")
 const Bus = require("./bus")
 const Autodect = require("./autodetect")
@@ -10,6 +13,13 @@ const Settings = require("./settings")
 window.Session = Session
 
 window.messages = window.messages || []
+
+// const search = searchInPage(remote.getCurrentWebContents())
+// document
+//   .getElementById("search-page-button")
+//   .addEventListener("click", () => {
+//     search.openSearchWindow()
+//   })
 
 let theme = Settings.get("theme")
 // TODO: Validate theme name
