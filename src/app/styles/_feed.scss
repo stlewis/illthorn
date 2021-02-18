@@ -4,6 +4,8 @@
 
   // Force onto GPU for best rendering
   transform: translate3d(0, 0, 0);
+
+  overflow-y: scroll;
 }
 
 pre.speech,
@@ -19,4 +21,15 @@ pre.whisper {
 
 .feed mark {
   background-color: transparent;
+}
+
+// Scroll Pinning
+.opening-pusher {
+}
+.feed > * {
+  overflow-anchor: none;
+}
+.scroll-anchor {
+  overflow-anchor: auto;
+  height: 5px;
 }

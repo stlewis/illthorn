@@ -51,6 +51,38 @@ module.exports = class Feed {
 
     this.root.classList.add("feed")
     this.root.classList.add("scroll")
+
+    this.root.insertAdjacentHTML(
+      "beforeend",
+      `<a href="#scroll-anchor-feed" id="scroll-anchor-feed-link"></a>
+      <div class="opening-pusher"></div>
+      <div id="scroll-anchor-feed" class="scroll-anchor"></div>`
+    )
+    this.scrollAnchor = this.root.querySelector(".scroll-anchor")
+    this.scrollAnchorLink = this.root.querySelector(
+      "#scroll-anchor-link-feed"
+    )
+    this.openingPusher = this.root.querySelector(".opening-pusher")
+
+    // Let layout happen
+    setTimeout(() => {
+      this.openingPusher.style.height =
+        this.root.getBoundingClientRect().height + "px"
+
+      // Doesn't seem to pin the scrolling
+      this.root.scrollTop = this.root.scrollHeight
+
+      // Force clicking a link to the bottom doesn't work
+      // this.scrollAnchorLink.click()
+    }, 1)
+
+    setTimeout(() => {
+      this.root.scrollTo({
+        top: this.root.scrollHeight,
+        behavior: "smooth",
+      })
+    }, 2000)
+
     this._focused = false
     Feed.Feeds.set(session, this)
   }
@@ -98,7 +130,6 @@ module.exports = class Feed {
     // turn siblings off
     Array.from(Feed.Feeds).forEach(([_, feed]) => feed.idle())
     this._focused = true
-    this.reattach_head()
     return this
   }
   /**
@@ -131,30 +162,19 @@ module.exports = class Feed {
       return console.trace("{error: %o}", ele)
     }
 
-    const was_scrolling = this._scrolling
-
     // swap for the latest prompt
     if (Feed.is_prompt(ele) && this.has_prompt()) {
       return this.root.replaceChild(ele, this.root.lastElementChild)
     }
-    // append the tag to the actual HTML
-    this.root.append(ele)
+
+    // append the tag to the actual HTML (before the scroll anchor)
+    this.root.insertBefore(ele, this.scrollAnchor)
     // if our pruned in-memory buffer has grown too long
     // we must prune it again.  These messages are lost forever
     // but that is what logs are for!
     this.flush()
-    // scroll the feed to the HEAD position
-    // TODO: Investigate pure CSS based pin-to-bottom scrolling: https://blog.eqrion.net/pin-to-bottom/ (may have better performance)
-    if (!was_scrolling) this.reattach_head()
   }
-  /**
-   * some user gesture (scrolling forward/button) has triggered
-   * reattaching to the head of the message feed
-   */
-  reattach_head() {
-    this.root.scrollTop = this.root.scrollHeight
-    return this
-  }
+
   /**
    * finalizer for pruned nodes
    */

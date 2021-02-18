@@ -65,10 +65,6 @@ module.exports = class Macros {
       sess.history.write(cli, { forward: 1 })
     })
 
-    KeyboardJS.on("ctrl+pagedown", (_) => {
-      const sess = Session.focused()
-      sess && sess.feed.reattach_head()
-    })
     // todo: handle scrolling from any focused state
     KeyboardJS.on("pageup", (e) => {
       e.preventDefault()

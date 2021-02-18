@@ -10,10 +10,7 @@ body {
   width: 4px;
 }
 ::-webkit-scrollbar-thumb {
-  background-color: var(
-    --scrollbar-thumb-color,
-    var(--info, #184f3f)
-  );
+  background-color: var(--scrollbar-thumb-color, var(--info, #184f3f));
 }
 
 #feed-wrapper {

@@ -64,7 +64,6 @@ Bus.on("macro", (macro) => {
 window.addEventListener("resize", function () {
   const session = Session.focused()
   if (!session) return
-  session.feed.reattach_head()
 })
 
 document.addEventListener("keypress", UI.CLI.global_handlekeypress)

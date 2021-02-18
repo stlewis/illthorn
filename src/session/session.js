@@ -184,7 +184,6 @@ module.exports = class Session extends events.EventEmitter {
     this.activate()
     this.feed.attach_to_dom(view)
     this.streams.redraw(view)
-    this.feed.reattach_head()
     return this
   }
 
