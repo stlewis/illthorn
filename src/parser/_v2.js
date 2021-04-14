@@ -271,6 +271,7 @@ const oncomponent = (exports.oncomponent = (parsed, component) => {
 const onstream = (exports.onstream = (parsed, stream) => {
   stream.remove()
   switch (stream.className) {
+    case "speech":
     case "thoughts":
       return appendParsedText(parsed, stream)
     default:

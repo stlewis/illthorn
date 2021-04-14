@@ -147,6 +147,21 @@ module.exports = class Streams {
       streamChannel.classList.add("death")
       // Remove the "* " from the rest of message so it doesn't repeat
       streamText.innerText = text.trim().substring(2)
+    } else if (text.trim().match(/(say|ask|exclaim)s?, (\".*\")/)) {
+      streamChannel.classList.remove("stream-channel")
+      streamChannel.classList.add("speaker-indicator")
+      streamText.classList.add("speaker-dialogue")
+      // This is a chat message
+      const messageRegEx = /(.*)((say|ask|exclaim)s?), (\".*\")/
+      const messageParts = messageRegEx.exec(text)
+      console.log("parts", messageParts)
+      // 1, 2, 4 -- and a comma
+      streamChannel.innerText = Lens.get(messageParts, "1")
+      streamChannel.innerText += Lens.get(messageParts, "2")
+      streamChannel.innerText += ", "
+      streamText.innerText = Lens.get(messageParts, "4")
+      streamText.innerText += "\n"
+      return [streamChannel, streamText]
     } else {
       // Unknown stream message, just dump it in with empty channel
       streamText.innerText = text
